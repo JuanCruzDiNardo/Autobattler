@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripst.Clases
 {
-    internal class States
+    public class States
     {
         public bool Dead { get; set; } = false;
 

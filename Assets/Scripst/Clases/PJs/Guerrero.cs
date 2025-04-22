@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Assets.Scripst.Clases.PJs
@@ -18,15 +20,37 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 10;
             Def = 10;
             Speed = 7;
-            weapon = new Weapon(clase);
-            armor = new Armor(clase);
+            Weapon = new Weapon(clase);
+            Armor = new Armor(clase);
             State = new States();
 
         }
 
-        public override void TakeAction()
+        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
         {
-            throw new NotImplementedException();
+            if (!CanAct()) return;
+
+            if (position <= 1)
+            {
+                int count = Mathf.Min(2, enemyTeam.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    Character target = enemyTeam[i];
+                    int damage = Atack();
+                    target.TakeDamage(damage);
+                    target.State.Stuned = true;
+                    target.State.StunedTurns = 1;
+                    Debug.Log($"El Guerrero golpea a {target.clase} por {damage} de daño y lo aturde por 1 turno.");
+                }
+            }
+            else // Posición 2 o 3 => moverse hacia adelante
+            {
+                Character forward = ownTeam[position - 1];
+                ownTeam[position - 1] = this;
+                ownTeam[position] = forward;
+
+                Debug.Log($"El Guerrero avanza en la formación, intercambia lugar con {forward.clase}.");
+            }
         }
     }
 }

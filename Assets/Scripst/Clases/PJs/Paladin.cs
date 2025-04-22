@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 namespace Assets.Scripst.Clases.PJs
@@ -18,14 +19,44 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 7;
             Def = 12;
             Speed = 5;
-            weapon = new Weapon(clase);
-            armor = new Armor(clase);
+            Weapon = new Weapon(clase);
+            Armor = new Armor(clase);
             State = new States();
         }
 
-        public override void TakeAction()
+        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
         {
-            throw new NotImplementedException();
+            if (!CanAct()) return;
+
+            // 1. Si tiene menos de la mitad de vida, se cura
+            if (Healt < MaxHealt / 2)
+            {
+                int healAmount = 5 + Level;
+                Healt = Mathf.Min(MaxHealt, Healt + healAmount);
+                Debug.Log($"El Paladín se cura {healAmount} puntos de vida.");
+                return;
+            }
+
+            // 2. Si está en primera posición, ataca al primer enemigo
+            if (position == 0)
+            {
+                Character target = enemyTeam.First();
+                int damage = Atack(); // ya incluye bonus de defensa
+                target.TakeDamage(damage);
+                Debug.Log($"El Paladín ataca al enemigo por {damage} de daño (ataque + defensa).");
+            }
+            // 3. Si está en otra posición, se mueve hacia adelante
+            else
+            {
+                Character forward = ownTeam[position - 1];
+                ownTeam[position - 1] = this;
+                ownTeam[position] = forward;
+                Debug.Log($"El Paladín avanza en la formación, intercambia lugar con {forward.clase}.");
+            }
+        }
+        public override int Atack()
+        {
+            return Atk + Weapon.Atk + ((Def + Armor.Def) / 2);
         }
     }
 }

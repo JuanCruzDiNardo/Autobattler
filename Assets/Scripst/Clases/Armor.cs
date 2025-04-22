@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripst.Clases
 {
-    internal class Armor
+    public class Armor
     {
         public Armor(Class clase)
         {

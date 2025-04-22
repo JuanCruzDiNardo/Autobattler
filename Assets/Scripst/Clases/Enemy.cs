@@ -7,9 +7,9 @@ using Assets.Scripst.Clases;
 
 namespace Assets.Scripst.Clases
 {
-    internal abstract class Enemy : Character
+    public class Enemy : Character
     {
-        protected Enemy()
+        public Enemy()
         {
             clase = Class.Monstruo;
             Level = 1;
@@ -18,9 +18,14 @@ namespace Assets.Scripst.Clases
             Atk = 5;
             Def = 5;
             Speed = 6;
-            weapon = new Weapon(clase);
-            armor = new Armor(clase);
+            Weapon = new Weapon(clase);
+            Armor = new Armor(clase);
             State = new States();
+        }
+
+        public override void TakeAction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripst.Clases
 {
-    internal enum Rarity
+    public enum Rarity
     {
         Comon,
         Uncommon,
@@ -14,7 +14,7 @@ namespace Assets.Scripst.Clases
         Epic,
         Legendary,
     }
-    enum Class
+    public enum Class
     {
         Arquero,
         Clerigo,

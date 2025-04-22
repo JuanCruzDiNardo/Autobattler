@@ -18,8 +18,8 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 4;
             Def = 12;
             Speed = 5;
-            weapon = new Weapon(clase);
-            armor = new Armor(clase);
+            Weapon = new Weapon(clase);
+            Armor = new Armor(clase);
             State = new States();
         }
         public override void TakeAction()
