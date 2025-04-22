@@ -9,10 +9,19 @@ namespace Assets.Scripst.Clases.PJs
 {
     internal class Guerrero : Character
     {
-
-        public override int Atack()
+        public Guerrero()
         {
-            throw new NotImplementedException();
+            clase = Class.Guerrero;
+            Level = 1;
+            Healt = 18;
+            MaxHealt = 18;
+            Atk = 10;
+            Def = 10;
+            Speed = 7;
+            weapon = new Weapon(clase);
+            armor = new Armor(clase);
+            State = new States();
+
         }
 
         public override void TakeAction()

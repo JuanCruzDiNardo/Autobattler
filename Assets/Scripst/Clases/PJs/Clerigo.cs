@@ -9,6 +9,19 @@ namespace Assets.Scripst.Clases.PJs
 {
     internal class Clerigo : Character
     {
+        public Clerigo()
+        {
+            clase = Class.Clerigo;
+            Level = 1;
+            Healt = 15;
+            MaxHealt = 15;
+            Atk = 4;
+            Def = 12;
+            Speed = 5;
+            weapon = new Weapon(clase);
+            armor = new Armor(clase);
+            State = new States();
+        }
         public override void TakeAction()
         {
             throw new NotImplementedException();

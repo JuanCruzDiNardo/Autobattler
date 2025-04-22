@@ -8,10 +8,10 @@ namespace Assets.Scripst.Clases
 {
     internal class States
     {
-        public bool Dead { get; set; }
+        public bool Dead { get; set; } = false;
 
-        public bool Stuned { get; set; }
+        public bool Stuned { get; set; } = false;
 
-        public int StunedTurns { get; set; }
+        public int StunedTurns { get; set; } = 0;
     }
 }

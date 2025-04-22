@@ -8,6 +8,14 @@ namespace Assets.Scripst.Clases
 {
     internal class Armor
     {
+        public Armor(Class clase)
+        {
+            name = "armadura";
+            def = 5;
+            lvl = 1;
+            rarity = Rarity.Comon;
+            this.clase = clase;
+        }
 
         private string name;
         private int def;
