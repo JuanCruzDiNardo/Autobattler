@@ -37,10 +37,16 @@ namespace Assets.Scripst.Clases.PJs
             }
             else
             {
-                target = enemyTeam.First(); // Ataca al más cercano
-                int damage = Atack() / 2; // Daño reducido
-                Debug.Log($"El arquero golpea al primer enemigo por {damage} de daño.");
-                target.TakeDamage(damage);
+                bool moved = Move(ownTeam, position, false); // intenta ir hacia atrás
+
+                if (!moved)
+                {
+                    target = enemyTeam.First(); // Ataca al más cercano
+                    int damage = Atack() / 2; // Daño reducido                
+                    target.TakeDamage(damage);
+                    Debug.Log($"El arquero golpea al primer enemigo por {damage} de daño.");
+                }
+                    
             }
         }
     }

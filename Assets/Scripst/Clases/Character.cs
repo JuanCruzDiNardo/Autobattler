@@ -51,6 +51,24 @@ namespace Assets.Scripst.Clases
             return true;
         }
 
+        public bool Move(List<Character> team, int currentIndex, bool forward)
+        {
+            int targetIndex = currentIndex + (forward? -1: 1);//-1 mueve hacia adelante y +1 hacia atras
+
+            if (targetIndex < 0 || targetIndex >= team.Count)
+                return false;
+
+            if (team[targetIndex].State.Dead)
+                return false;
+
+            Character temp = team[targetIndex];
+            team[targetIndex] = this;
+            team[currentIndex] = temp;
+
+            Debug.Log($"{clase} cambia posición con {temp.clase}.");
+            return true;
+        }
+
 
         private void Death()
         {

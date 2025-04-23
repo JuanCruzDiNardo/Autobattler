@@ -48,10 +48,7 @@ namespace Assets.Scripst.Clases.PJs
             // 3. Si está en otra posición, se mueve hacia adelante
             else
             {
-                Character forward = ownTeam[position - 1];
-                ownTeam[position - 1] = this;
-                ownTeam[position] = forward;
-                Debug.Log($"El Paladín avanza en la formación, intercambia lugar con {forward.clase}.");
+                Move(ownTeam, position, true); // Mover hacia adelante                
             }
         }
         public override int Atack()

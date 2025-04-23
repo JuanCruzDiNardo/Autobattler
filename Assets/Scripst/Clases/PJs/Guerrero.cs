@@ -45,11 +45,7 @@ namespace Assets.Scripst.Clases.PJs
             }
             else // Posición 2 o 3 => moverse hacia adelante
             {
-                Character forward = ownTeam[position - 1];
-                ownTeam[position - 1] = this;
-                ownTeam[position] = forward;
-
-                Debug.Log($"El Guerrero avanza en la formación, intercambia lugar con {forward.clase}.");
+                Move(ownTeam, position, true); // Mover hacia adelante
             }
         }
     }
