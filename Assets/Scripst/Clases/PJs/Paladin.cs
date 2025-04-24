@@ -19,14 +19,14 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 7;
             Def = 12;
             Speed = 5;
+            Agro = 30;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
         }
 
-        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
-        {
-            if (!CanAct()) return;
+        protected override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
+        {            
 
             // 1. Si tiene menos de la mitad de vida, se cura
             if (Healt < MaxHealt / 2)

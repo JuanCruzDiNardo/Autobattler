@@ -47,27 +47,57 @@ public class GameManager : MonoBehaviour
     {
         while (allyTeam.Any(c => c.State.Dead == false) && enemyTeam.Any(c => c.State.Dead == false))
         {
+            PrintTeamStatus();
+
             if (turnQueue.Count == 0)
             {
                 SortTurnOrder();
+                ReorderTeam(allyTeam);
+                ReorderTeam(enemyTeam);
             }
 
             Character current = turnQueue.Dequeue();
 
-            if (current.State.Dead == false)
-            {
-                current.TakeAction(
+            current.StartTurn(
                     allyTeam.Contains(current) ? allyTeam : enemyTeam,
                     allyTeam.Contains(current) ? enemyTeam : allyTeam,
-                    allyTeam.Contains(current) ? allyTeam.IndexOf(current) : enemyTeam.IndexOf(current)
-                );
-                // Acción personalizada según el personaje
-            }
+                    allyTeam.Contains(current) ? allyTeam.IndexOf(current) : enemyTeam.IndexOf(current));
+
 
             yield return new WaitForSeconds(1f); // Delay entre turnos
         }
 
         Debug.Log("Fin del combate");
+    }
+
+    public static void ReorderTeam(List<Character> team)
+    {
+        var vivos = team.Where(c => !c.State.Dead).ToList();
+        var muertos = team.Where(c => c.State.Dead).ToList();
+        team.Clear();
+        team.AddRange(vivos);
+        team.AddRange(muertos);
+    }
+
+    public void PrintTeamStatus()
+    {
+        Debug.Log("=== Estado de los Equipos ===");
+
+        Debug.Log("--- Aliados ---");
+        for (int i = 0; i < allyTeam.Count; i++)
+        {
+            Character c = allyTeam[i];
+            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")}");
+        }
+
+        Debug.Log("--- Enemigos ---");
+        for (int i = 0; i < enemyTeam.Count; i++)
+        {
+            Character c = enemyTeam[i];
+            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")}");
+        }
+
+        Debug.Log("=============================");
     }
 }
 

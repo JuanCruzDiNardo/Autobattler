@@ -20,15 +20,15 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 10;
             Def = 10;
             Speed = 7;
+            Agro = 25;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
 
         }
 
-        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
-        {
-            if (!CanAct()) return;
+        protected override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
+        {            
 
             if (position <= 1)
             {
@@ -38,8 +38,8 @@ namespace Assets.Scripst.Clases.PJs
                     Character target = enemyTeam[i];
                     int damage = Atack();
                     target.TakeDamage(damage);
-                    target.State.Stuned = true;
-                    target.State.StunedTurns = 1;
+                    target.State.Stun.Active = true;
+                    target.State.Stun.Duration = 1;
                     Debug.Log($"El Guerrero golpea a {target.clase} por {damage} de daño y lo aturde por 1 turno.");
                 }
             }

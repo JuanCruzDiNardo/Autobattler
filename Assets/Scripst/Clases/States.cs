@@ -39,31 +39,35 @@ namespace Assets.Scripst.Clases
         {
             // Actualiza turnos y desactiva estados que terminan
             if (Stun.Active)
-            {
-                Stun.Duration--;
+            {                
                 if (Stun.Duration <= 0)
                     Stun.Active = false;
+                else
+                    Stun.Duration--;
             }
 
             if (Poison.Active)
-            {
-                Poison.Duration--;
+            {                
                 if (Poison.Duration <= 0)
                     Poison.Active = false;
+                else
+                    Poison.Duration--;
             }
 
             if (AtkBuff.Active)
-            {
-                AtkBuff.Duration--;
+            {                
                 if (AtkBuff.Duration <= 0)
                     AtkBuff.Active = false;
+                else
+                    AtkBuff.Duration--;
             }
 
             if (DefBuff.Active)
-            {
-                DefBuff.Duration--;
+            {                
                 if (DefBuff.Duration <= 0)
                     DefBuff.Active = false;
+                else
+                    DefBuff.Duration--;
             }
         }
     }

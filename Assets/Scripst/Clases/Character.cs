@@ -16,11 +16,32 @@ namespace Assets.Scripst.Clases
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Speed { get; set; }
+        public int Agro { get; set; }
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
-        public States State { get; set; }
+        public States State { get; set; }        
 
-        public abstract void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position);
+        protected abstract void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position);
+
+        public virtual void StartTurn(List<Character> allyTeam, List<Character> enemyTeam, int position)
+        {
+            // Actualiza todos los estados
+            State.Tick();
+
+            // Si está envenenado, aplica el daño
+            if (State.Poison.Active)
+            {
+                TakeTrueDamage(State.Poison.DamagePerTurn);
+                Debug.Log($"{clase} sufre {State.Poison.DamagePerTurn} de daño por veneno.");
+            }
+
+            if (!this.State.Dead && this.CanAct())
+            {
+                this.TakeAction(allyTeam, enemyTeam, position);
+                // Acción personalizada según el personaje
+            }
+        }
+
 
         public virtual int Atack()
         {
@@ -34,26 +55,26 @@ namespace Assets.Scripst.Clases
             Death();
         }
 
+        public virtual void TakeTrueDamage(int dmg)
+        {
+            Healt -= dmg;
+
+            Death();
+        }
+
         protected bool CanAct()
         {
-            if (State.Stuned)
+            if (State.Stun.Active)
             {
-                Debug.Log($"{clase} está aturdido y pierde el turno.");
-                State.StunedTurns--;
-
-                if (State.StunedTurns <= 0)
-                {
-                    State.Stuned = false;
-                    Debug.Log($"{clase} ya no está aturdido.");
-                }
+                Debug.Log($"{clase} está aturdido y pierde el turno.");                               
                 return false;
             }
             return true;
         }
 
-        public bool Move(List<Character> team, int currentIndex, bool forward)
+        public bool Move(List<Character> team, int thisIndex, bool forward)
         {
-            int targetIndex = currentIndex + (forward? -1: 1);//-1 mueve hacia adelante y +1 hacia atras
+            int targetIndex = thisIndex + (forward? -1: 1);//-1 mueve hacia adelante y +1 hacia atras
 
             if (targetIndex < 0 || targetIndex >= team.Count)
                 return false;
@@ -63,16 +84,21 @@ namespace Assets.Scripst.Clases
 
             Character temp = team[targetIndex];
             team[targetIndex] = this;
-            team[currentIndex] = temp;
+            team[thisIndex] = temp;
 
             Debug.Log($"{clase} cambia posición con {temp.clase}.");
             return true;
         }
 
-
         private void Death()
         {
-            if(Healt <= 0) State.Dead = true;
+            if(Healt <= 0)
+            {
+                State.Dead = true;
+
+                Debug.Log($"{clase} ah muerto.");
+            }
+            
         }
     }
 }

@@ -19,13 +19,13 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 4;
             Def = 12;
             Speed = 5;
+            Agro = 15;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
         }
-        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
-        {
-            if (!CanAct()) return;
+        protected override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
+        {            
 
             // Si está en las dos últimas posiciones puede curar o buffear
             if (position >= ownTeam.Count - 2)

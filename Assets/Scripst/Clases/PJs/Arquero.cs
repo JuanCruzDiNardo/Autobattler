@@ -18,13 +18,13 @@ namespace Assets.Scripst.Clases.PJs
             Atk = 12;
             Def = 6;
             Speed = 10;
+            Agro = 10;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
         }
-        public override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
-        {
-            if(!CanAct()) return;
+        protected override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)
+        {            
 
             Character target;
 
