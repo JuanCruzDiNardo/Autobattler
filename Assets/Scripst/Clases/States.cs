@@ -8,8 +8,10 @@ namespace Assets.Scripst.Clases
 {
     public class StatusEffect
     {
+        public string Name { get; set; }
         public bool Active { get; set; } = false;
         public int Duration { get; set; } = 0;
+        public int Resistence { get; set; } = 0;
     }
 
     public class DamageOverTimeEffect : StatusEffect
@@ -23,17 +25,14 @@ namespace Assets.Scripst.Clases
     }
 
     public class States
-    {
+    {       
         public bool Dead { get; set; } = false;
+       
+        public StatusEffect Stun { get; set; } = new StatusEffect() {Name = "Aturdido", Resistence = 50 };
+        public DamageOverTimeEffect Poison { get; set; } = new DamageOverTimeEffect() {Name = "Envenenado", Resistence = 30 };
 
-        public int StunResistance { get; set; } = 50;
-        public StatusEffect Stun { get; set; } = new StatusEffect();
-
-        public int PoisonResistance { get; set; } = 30;
-        public DamageOverTimeEffect Poison { get; set; } = new DamageOverTimeEffect();
-
-        public BuffEffect AtkBuff { get; set; } = new BuffEffect();
-        public BuffEffect DefBuff { get; set; } = new BuffEffect();
+        public BuffEffect AtkBuff { get; set; } = new BuffEffect() { Name = "Aumento de Ataque"};
+        public BuffEffect DefBuff { get; set; } = new BuffEffect() { Name = "Aumento de Defensa"};
 
         public void Tick()
         {

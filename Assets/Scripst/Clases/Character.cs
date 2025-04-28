@@ -42,15 +42,31 @@ namespace Assets.Scripst.Clases
             }
         }
 
+        public void TakeState(StatusEffect effect, int turns)
+        {
+            int roll = UnityEngine.Random.Range(0, 100);
+
+            if(effect.Resistence < roll)
+            {
+                effect.Active = true;
+                effect.Duration = turns;
+                if(effect is BuffEffect)
+                    Debug.Log($"{clase} Gana el efecto {effect.Name} durante {turns} turnos.");                
+                else                
+                    Debug.Log($"{clase} Sufre el efecto {effect.Name} durante {turns} turnos.");
+            }
+            else
+                Debug.Log($"{clase} Resiste el efecto {effect.Name}");
+        }
 
         public virtual int Atack()
         {
-            return Atk + Weapon.Atk;
+            return Atk + Weapon.Atk + (State.AtkBuff.Active ? State.AtkBuff.Value : 0);
         }
 
         public virtual void TakeDamage(int dmg)
         {
-            Healt -= (dmg - dmg * (Def + Armor.Def)/100);
+            Healt -= (dmg - dmg * (Def + Armor.Def + (State.DefBuff.Active? State.DefBuff.Value : 0))/100);
             
             Death();
         }
@@ -95,7 +111,7 @@ namespace Assets.Scripst.Clases
             if(Healt <= 0)
             {
                 State.Dead = true;
-
+                Healt = 0;
                 Debug.Log($"{clase} ah muerto.");
             }
             

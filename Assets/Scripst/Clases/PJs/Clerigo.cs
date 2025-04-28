@@ -53,7 +53,7 @@ namespace Assets.Scripst.Clases.PJs
                 if (highestAtkAlly != null)
                 {
                     int buffAmount = 2 + (Level / 2);
-                    highestAtkAlly.Atk += buffAmount;
+                    highestAtkAlly.TakeState(highestAtkAlly.State.AtkBuff, buffAmount);
                     Debug.Log($"El Clérigo bendice a {highestAtkAlly.clase}, aumentando su ataque en {buffAmount}.");
                 }
 

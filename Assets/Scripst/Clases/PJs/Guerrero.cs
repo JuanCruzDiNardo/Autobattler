@@ -38,8 +38,7 @@ namespace Assets.Scripst.Clases.PJs
                     Character target = enemyTeam[i];
                     int damage = Atack();
                     target.TakeDamage(damage);
-                    target.State.Stun.Active = true;
-                    target.State.Stun.Duration = 1;
+                    target.TakeState(target.State.Stun, 1);
                     Debug.Log($"El Guerrero golpea a {target.clase} por {damage} de daño y lo aturde por 1 turno.");
                 }
             }

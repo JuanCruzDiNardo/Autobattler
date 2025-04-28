@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(1f); // Delay entre turnos
         }
-
+        PrintTeamStatus();
         Debug.Log("Fin del combate");
     }
 
