@@ -18,7 +18,7 @@ namespace Assets.Scripst.Clases
             MaxHealt = 30;
             Atk = 5;
             Def = 5;
-            Speed = 6;
+            Speed = 40;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();

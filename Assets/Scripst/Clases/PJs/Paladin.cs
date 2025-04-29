@@ -18,7 +18,7 @@ namespace Assets.Scripst.Clases.PJs
             MaxHealt = 25;
             Atk = 7;
             Def = 12;
-            Speed = 5;
+            Speed = 30;
             Agro = 30;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
@@ -40,7 +40,7 @@ namespace Assets.Scripst.Clases.PJs
             // 2. Si está en primera posición, ataca al primer enemigo
             if (position == 0)
             {
-                Character target = enemyTeam.First();
+                Character target = enemyTeam.First(x => !x.State.Dead);
                 int damage = Atack(); // ya incluye bonus de defensa
                 target.TakeDamage(damage);
                 Debug.Log($"El Paladín ataca al enemigo por {damage} de daño (ataque + defensa).");

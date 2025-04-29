@@ -17,7 +17,7 @@ namespace Assets.Scripst.Clases.PJs
             MaxHealt = 12;
             Atk = 12;
             Def = 6;
-            Speed = 10;
+            Speed = 60;
             Agro = 10;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
@@ -30,7 +30,7 @@ namespace Assets.Scripst.Clases.PJs
 
             if (position >= 2 && enemyTeam.Count > 0) // Tercera o cuarta posición
             {
-                target = enemyTeam.Last(); // Ataca al enemigo más alejado
+                target = enemyTeam.Last(x => !x.State.Dead); // Ataca al enemigo más alejado
                 int damage = Atack();
                 Debug.Log($"El arquero dispara una flecha al último enemigo por {damage} de daño.");
                 target.TakeDamage(damage);

@@ -19,7 +19,7 @@ namespace Assets.Scripst.Clases.PJs
             MaxHealt = 18;
             Atk = 10;
             Def = 10;
-            Speed = 7;
+            Speed = 50;
             Agro = 25;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);

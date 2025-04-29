@@ -8,12 +8,15 @@ public class GameManager : MonoBehaviour
 {
     public List<Character> allyTeam = new List<Character>();
     public List<Character> enemyTeam = new List<Character>();
-    private Queue<Character> turnQueue = new Queue<Character>();
+    private List<Character> turnQueue = new List<Character>();
+
+    private int CurrentTime = 100;
+    private int Turn = 1;
 
     void Start()
     {
         InitializeTeams();
-        SortTurnOrder();
+        InitializeTurnQueue();
         StartCoroutine(HandleTurns());
     }
 
@@ -30,43 +33,83 @@ public class GameManager : MonoBehaviour
             enemyTeam.Add(new Enemy());
     }
 
-    void SortTurnOrder()
+    void InitializeTurnQueue()
     {
-        List<Character> allCharacters = allyTeam.Concat(enemyTeam).ToList();
-        allCharacters = allCharacters.OrderByDescending(c => c.Speed).ToList();
-
         turnQueue.Clear();
-        foreach (var character in allCharacters)
+        foreach (var character in allyTeam.Concat(enemyTeam))
         {
-            if (character.Healt > 0) // Asegurarse de que estén vivos
-                turnQueue.Enqueue(character);
+            if (!character.State.Dead)
+            {
+                character.NextActionTime = Mathf.Max(10, CurrentTime - character.Speed);
+                turnQueue.Add(character);
+            }
         }
+
+        SortQueue();
+    }
+    void UpdateQueueTimes(Character actedCharacter)
+    {
+        CurrentTime -= actedCharacter.NextActionTime;
+
+        int interval = Mathf.Max(10, 100 - actedCharacter.Speed);
+
+        foreach (var character in turnQueue)
+        {
+            character.NextActionTime -= actedCharacter.NextActionTime;
+        }
+
+        // Solo si el personaje sigue vivo, lo volvemos a agregar
+        if (!actedCharacter.State.Dead)
+        {
+            actedCharacter.NextActionTime = interval;
+            turnQueue.Add(actedCharacter);
+        }
+
+        // Si el tiempo global llegó a 0, reiniciar a 100
+        if (CurrentTime <= 0)
+        {
+            Turn++;
+            CurrentTime = 100;
+            Debug.Log("¡Nuevo turno global!");
+        }
+
+        SortQueue();
+    }
+
+    void SortQueue()
+    {
+        turnQueue = turnQueue.OrderBy(c => c.NextActionTime).ToList();
+        //ReorderTeam(turnQueue);
     }
 
     IEnumerator<WaitForSeconds> HandleTurns()
     {
-        while (allyTeam.Any(c => c.State.Dead == false) && enemyTeam.Any(c => c.State.Dead == false))
+        while (allyTeam.Any(c => !c.State.Dead) && enemyTeam.Any(c => !c.State.Dead))
         {
-            PrintTeamStatus();
-
             if (turnQueue.Count == 0)
             {
-                SortTurnOrder();
-                ReorderTeam(allyTeam);
-                ReorderTeam(enemyTeam);
+                Debug.LogWarning("TurnQueue vacía.");
+                yield break;
             }
 
-            Character current = turnQueue.Dequeue();
+            Character next = turnQueue.First();
+            turnQueue.RemoveAt(0);
 
-            current.StartTurn(
-                    allyTeam.Contains(current) ? allyTeam : enemyTeam,
-                    allyTeam.Contains(current) ? enemyTeam : allyTeam,
-                    allyTeam.Contains(current) ? allyTeam.IndexOf(current) : enemyTeam.IndexOf(current));
+            //currentTime = next.NextActionTime;
 
+            next.StartTurn(
+                allyTeam.Contains(next) ? allyTeam : enemyTeam,
+                allyTeam.Contains(next) ? enemyTeam : allyTeam,
+                allyTeam.Contains(next) ? allyTeam.IndexOf(next) : enemyTeam.IndexOf(next)
+            );
 
-            yield return new WaitForSeconds(1f); // Delay entre turnos
+            UpdateQueueTimes(next);
+
+            PrintTeamStatus();
+
+            yield return new WaitForSeconds(1f);
         }
-        PrintTeamStatus();
+
         Debug.Log("Fin del combate");
     }
 
@@ -81,23 +124,24 @@ public class GameManager : MonoBehaviour
 
     public void PrintTeamStatus()
     {
+        Debug.Log($"=== Tiempo Restante del turno {Turn} es {CurrentTime} ===");
         Debug.Log("=== Estado de los Equipos ===");
 
         Debug.Log("--- Aliados ---");
         for (int i = 0; i < allyTeam.Count; i++)
         {
             Character c = allyTeam[i];
-            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")}");
+            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")} - Tiempo para actuar {c.NextActionTime}");
         }
 
         Debug.Log("--- Enemigos ---");
         for (int i = 0; i < enemyTeam.Count; i++)
         {
             Character c = enemyTeam[i];
-            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")}");
+            Debug.Log($"Posición {i + 1}: {c.clase} - Vida: {c.Healt}/{c.MaxHealt} - Estado: {(c.State.Dead ? "Muerto" : "Vivo")} - Tiempo para actuar {c.NextActionTime}");
         }
 
-        Debug.Log("=============================");
+        Debug.Log("==========================================================");
     }
 }
 

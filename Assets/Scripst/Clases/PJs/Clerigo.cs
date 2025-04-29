@@ -18,7 +18,7 @@ namespace Assets.Scripst.Clases.PJs
             MaxHealt = 15;
             Atk = 4;
             Def = 12;
-            Speed = 5;
+            Speed = 70;
             Agro = 15;
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
@@ -52,8 +52,8 @@ namespace Assets.Scripst.Clases.PJs
 
                 if (highestAtkAlly != null)
                 {
-                    int buffAmount = 2 + (Level / 2);
-                    highestAtkAlly.TakeState(highestAtkAlly.State.AtkBuff, buffAmount);
+                    int buffAmount = Level * 5;
+                    highestAtkAlly.TakeState(highestAtkAlly.State.AtkBuff,3,buffAmount);
                     Debug.Log($"El Clérigo bendice a {highestAtkAlly.clase}, aumentando su ataque en {buffAmount}.");
                 }
 

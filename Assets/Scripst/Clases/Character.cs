@@ -16,6 +16,7 @@ namespace Assets.Scripst.Clases
         public int Atk { get; set; }
         public int Def { get; set; }
         public int Speed { get; set; }
+        public int NextActionTime { get; set; } = 0;
         public int Agro { get; set; }
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
@@ -25,6 +26,9 @@ namespace Assets.Scripst.Clases
 
         public virtual void StartTurn(List<Character> allyTeam, List<Character> enemyTeam, int position)
         {
+            if (this.State.Dead)
+                return;
+
             // Actualiza todos los estados
             State.Tick();
 
@@ -35,14 +39,13 @@ namespace Assets.Scripst.Clases
                 Debug.Log($"{clase} sufre {State.Poison.DamagePerTurn} de daño por veneno.");
             }
 
-            if (!this.State.Dead && this.CanAct())
-            {
+            if (!this.State.Dead && this.CanAct())            
                 this.TakeAction(allyTeam, enemyTeam, position);
                 // Acción personalizada según el personaje
-            }
+            
         }
 
-        public void TakeState(StatusEffect effect, int turns)
+        public void TakeState(StatusEffect effect, int turns, int value = 0)
         {
             int roll = UnityEngine.Random.Range(0, 100);
 
@@ -50,6 +53,12 @@ namespace Assets.Scripst.Clases
             {
                 effect.Active = true;
                 effect.Duration = turns;
+
+                if (effect is BuffEffect)
+                {
+                    ((BuffEffect)effect).Value = value;
+                }
+
                 if(effect is BuffEffect)
                     Debug.Log($"{clase} Gana el efecto {effect.Name} durante {turns} turnos.");                
                 else                
@@ -61,7 +70,7 @@ namespace Assets.Scripst.Clases
 
         public virtual int Atack()
         {
-            return Atk + Weapon.Atk + (State.AtkBuff.Active ? State.AtkBuff.Value : 0);
+            return Atk + Weapon.Atk + (State.AtkBuff.Active? State.AtkBuff.Value : 0);
         }
 
         public virtual void TakeDamage(int dmg)
