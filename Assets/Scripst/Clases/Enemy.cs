@@ -22,6 +22,7 @@ namespace Assets.Scripst.Clases
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
+            LoadCharacterImage();
         }
 
         protected override void TakeAction(List<Character> allies, List<Character> enemies, int position)

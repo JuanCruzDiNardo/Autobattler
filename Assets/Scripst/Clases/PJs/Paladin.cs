@@ -23,6 +23,7 @@ namespace Assets.Scripst.Clases.PJs
             Weapon = new Weapon(clase);
             Armor = new Armor(clase);
             State = new States();
+            LoadCharacterImage();
         }
 
         protected override void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position)

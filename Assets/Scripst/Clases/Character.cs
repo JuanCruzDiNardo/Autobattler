@@ -20,7 +20,9 @@ namespace Assets.Scripst.Clases
         public int Agro { get; set; }
         public Weapon Weapon { get; set; }
         public Armor Armor { get; set; }
-        public States State { get; set; }        
+        public States State { get; set; }
+
+        public Sprite CharacterImage { get; private set; }        
 
         protected abstract void TakeAction(List<Character> ownTeam, List<Character> enemyTeam, int position);
 
@@ -124,6 +126,17 @@ namespace Assets.Scripst.Clases
                 Debug.Log($"{clase} ah muerto.");
             }
             
+        }
+
+        protected void LoadCharacterImage()
+        {
+            string ruta = "Characters/" + clase.ToString();
+
+            CharacterImage = Resources.Load<Sprite>(ruta) as Sprite;
+            if (CharacterImage == null)
+            {
+                Debug.LogWarning($"No se encontró la imagen para {clase} en {ruta}");
+            }
         }
     }
 }

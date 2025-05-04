@@ -10,14 +10,22 @@ public class GameManager : MonoBehaviour
     public List<Character> enemyTeam = new List<Character>();
     private List<Character> turnQueue = new List<Character>();
 
+    private UIManager uiManager;
+
+    private bool combatPaused = false;
     private int CurrentTime = 100;
     private int Turn = 1;
 
     void Start()
     {
+        
         InitializeTeams();
         InitializeTurnQueue();
-        StartCoroutine(HandleTurns());
+
+        uiManager = GetComponent<UIManager>();
+        uiManager.LoadData(allyTeam, enemyTeam, turnQueue);
+
+        StartCoroutine(HandleTurns());        
     }
 
     void InitializeTeams()
@@ -83,9 +91,14 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator<WaitForSeconds> HandleTurns()
-    {
+    {        
+
         while (allyTeam.Any(c => !c.State.Dead) && enemyTeam.Any(c => !c.State.Dead))
         {
+            // Esperar si la simulación está pausada
+            while (combatPaused)
+                yield return null;
+
             if (turnQueue.Count == 0)
             {
                 Debug.LogWarning("TurnQueue vacía.");
@@ -93,7 +106,7 @@ public class GameManager : MonoBehaviour
             }
 
             Character next = turnQueue.First();
-            turnQueue.RemoveAt(0);
+            turnQueue.RemoveAt(0);            
 
             //currentTime = next.NextActionTime;
 
@@ -103,6 +116,7 @@ public class GameManager : MonoBehaviour
                 allyTeam.Contains(next) ? allyTeam.IndexOf(next) : enemyTeam.IndexOf(next)
             );
 
+            uiManager.UpdateUI(next);
             UpdateQueueTimes(next);
 
             PrintTeamStatus();
@@ -142,6 +156,12 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("==========================================================");
+    }    
+
+    public void ToggleCombatPause()
+    {
+        combatPaused = !combatPaused;
+        Debug.Log(combatPaused ? "Simulación de combate pausada" : "Simulación de combate reanudada");
     }
 }
 
