@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateUI(Character current)
     {               
-
+        //Character in turn
         allyTexts["clase"].text = current.clase.ToString();
         allyTexts["hp"].text = $"HP: {current.Healt}/{current.MaxHealt}";
         allyTexts["ataque"].text = $"ATK: {current.Atk}";

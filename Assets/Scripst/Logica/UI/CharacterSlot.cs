@@ -15,7 +15,7 @@ public class CharacterSlot : MonoBehaviour
         characterImage = GetComponent<Image>();
     }
 
-    public void LoadCharacter(Character c)
+    public void LoadCharacter(Character c, bool isAlly)
     {
         character = c;
 
@@ -24,6 +24,11 @@ public class CharacterSlot : MonoBehaviour
             // Asignar imagen del personaje, por ejemplo desde un diccionario o recurso
             characterImage.sprite = c.CharacterImage;
             characterImage.color = Color.white; // Asegura que sea visible
+
+            if (!isAlly)
+            {
+                characterImage.rectTransform.rotation = new Quaternion (characterImage.rectTransform.rotation.x,180, characterImage.rectTransform.rotation.y, characterImage.rectTransform.rotation.w);
+            }
         }
         else
         {

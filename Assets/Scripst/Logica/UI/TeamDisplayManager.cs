@@ -11,9 +11,9 @@ public class TeamDisplayManager : MonoBehaviour
         for (int i = 0; i < characterSlots.Length; i++)
         {
             if (i < team.Length)
-                characterSlots[i].LoadCharacter(team[i]);
+                characterSlots[i].LoadCharacter(team[i], isAllyTeam);
             else
-                characterSlots[i].LoadCharacter(null);
+                characterSlots[i].LoadCharacter(null, false);
         }
     }
 }
