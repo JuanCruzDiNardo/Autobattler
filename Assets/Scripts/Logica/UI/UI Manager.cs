@@ -12,30 +12,35 @@ public class UIManager : MonoBehaviour
     public Canvas UI;
     public Canvas Background;
 
+    public List<TextMeshProUGUI> TurnList = new List<TextMeshProUGUI>();
+
     private Dictionary<string, TextMeshProUGUI> allyTexts = new Dictionary<string, TextMeshProUGUI>();
     private Dictionary<string, TextMeshProUGUI> enemyTexts = new Dictionary<string, TextMeshProUGUI>();
 
     public Transform allyPanel;
     public Transform enemyPanel;
 
-    private List<Character> allyTeam;
-    private List<Character> enemyTeam;
-    private List<Character> turnQueue;
-
     public TeamDisplayManager allyDisplayManager;
     public TeamDisplayManager enemyDisplayManager;
 
-    public void LoadData(List<Character> allies, List<Character> enemies, List<Character> turnQueue)
-    {
-        this.allyTeam = allies;
-        this.enemyTeam = enemies;
-        this.turnQueue = turnQueue;
+    public void LoadData()
+    {        
 
-        allyDisplayManager.LoadTeam(allyTeam.ToArray());
-        enemyDisplayManager.LoadTeam(enemyTeam.ToArray());
+        allyDisplayManager.LoadTeam(GameManager.allyTeam.ToArray());
+        enemyDisplayManager.LoadTeam(GameManager.enemyTeam.ToArray());
 
         LoadTextFields(allyPanel, allyTexts);
         LoadTextFields(enemyPanel, enemyTexts);
+
+        LoadTurnUI();
+    }
+
+    public void LoadTurnUI()
+    {
+        for (int i = 0; i < GameManager.turnQueue.Count; i++)
+        {
+            TurnList.ElementAt(i).text = GameManager.turnQueue.ElementAt(i).clase.ToString();
+        }
     }
 
     void LoadTextFields(Transform panel, Dictionary<string, TextMeshProUGUI> dict)

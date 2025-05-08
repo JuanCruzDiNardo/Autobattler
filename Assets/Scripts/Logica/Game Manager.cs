@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<Character> allyTeam = new List<Character>();
-    public List<Character> enemyTeam = new List<Character>();
-    private List<Character> turnQueue = new List<Character>();
+    public static List<Character> allyTeam = new List<Character>();
+    public static List<Character> enemyTeam = new List<Character>();
+    public static List<Character> turnQueue = new List<Character>();
 
     private UIManager uiManager;
 
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         InitializeTurnQueue();
 
         uiManager = GetComponent<UIManager>();
-        uiManager.LoadData(allyTeam, enemyTeam, turnQueue);
+        uiManager.LoadData();
 
         StartCoroutine(HandleTurns());        
     }
