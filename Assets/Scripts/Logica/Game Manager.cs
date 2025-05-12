@@ -10,11 +10,14 @@ public class GameManager : MonoBehaviour
     public static List<Character> enemyTeam = new List<Character>();
     public static List<Character> turnQueue = new List<Character>();
 
+    public static Character CharacterInTurn = null;
+    public static Character CharacterTarget = null;
+
     private UIManager uiManager;
 
     private bool combatPaused = false;
-    private int CurrentTime = 100;
-    private int Turn = 1;
+    public static int CurrentTime = 100;
+    public static int Turn = 1;
 
     void Start()
     {
@@ -106,6 +109,7 @@ public class GameManager : MonoBehaviour
             }
 
             Character next = turnQueue.First();
+            CharacterInTurn = next;
             turnQueue.RemoveAt(0);            
 
             //currentTime = next.NextActionTime;
@@ -116,7 +120,7 @@ public class GameManager : MonoBehaviour
                 allyTeam.Contains(next) ? allyTeam.IndexOf(next) : enemyTeam.IndexOf(next)
             );
 
-            uiManager.UpdateUI(next);
+            uiManager.UpdateUI();
             UpdateQueueTimes(next);
 
             PrintTeamStatus();

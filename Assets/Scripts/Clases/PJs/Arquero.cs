@@ -32,6 +32,7 @@ namespace Assets.Scripst.Clases.PJs
             if (position >= 2 && enemyTeam.Count > 0) // Tercera o cuarta posición
             {
                 target = enemyTeam.Last(x => !x.State.Dead); // Ataca al enemigo más alejado
+                GameManager.CharacterTarget = target;
                 int damage = Atack();
                 Debug.Log($"El arquero dispara una flecha al último enemigo por {damage} de daño.");
                 target.TakeDamage(damage);
@@ -43,6 +44,7 @@ namespace Assets.Scripst.Clases.PJs
                 if (!moved)
                 {
                     target = enemyTeam.First(); // Ataca al más cercano
+                    GameManager.CharacterTarget = target;
                     int damage = Atack() / 2; // Daño reducido                
                     target.TakeDamage(damage);
                     Debug.Log($"El arquero golpea al primer enemigo por {damage} de daño.");

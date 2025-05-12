@@ -42,6 +42,7 @@ namespace Assets.Scripst.Clases.PJs
             if (position == 0)
             {
                 Character target = enemyTeam.First(x => !x.State.Dead);
+                GameManager.CharacterTarget = target;
                 int damage = Atack(); // ya incluye bonus de defensa
                 target.TakeDamage(damage);
                 Debug.Log($"El Paladín ataca al enemigo por {damage} de daño (ataque + defensa).");

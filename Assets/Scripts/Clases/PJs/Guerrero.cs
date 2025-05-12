@@ -36,6 +36,7 @@ namespace Assets.Scripst.Clases.PJs
                 for (int i = 0; i < count; i++)
                 {
                     Character target = enemyTeam[i];
+                    GameManager.CharacterTarget = target;
                     int damage = Atack();
                     target.TakeDamage(damage);
                     target.TakeState(target.State.Stun, 1);

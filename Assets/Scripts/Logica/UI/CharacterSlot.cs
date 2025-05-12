@@ -41,7 +41,7 @@ public class CharacterSlot : MonoBehaviour
     {
         if (character != null)
         {
-            uiManager.UpdateUI(character);
+            uiManager.UpdateUI();
         }
     }
 }

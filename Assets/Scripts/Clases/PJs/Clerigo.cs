@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Assets.Scripst.Clases.PJs
 {
@@ -41,6 +42,7 @@ namespace Assets.Scripst.Clases.PJs
                 {
                     int healAmount = (int)(MaxHealt * 0.2f) + Def;
                     lowestHpAlly.Healt = Mathf.Min(lowestHpAlly.MaxHealt, lowestHpAlly.Healt + healAmount);
+                    GameManager.CharacterTarget = lowestHpAlly;
                     Debug.Log($"El Clérigo cura a {lowestHpAlly.clase} por {healAmount} puntos de vida.");
                     return;
                 }
@@ -55,6 +57,7 @@ namespace Assets.Scripst.Clases.PJs
                 {
                     int buffAmount = Level * 5;
                     highestAtkAlly.TakeState(highestAtkAlly.State.AtkBuff,3,buffAmount);
+                    GameManager.CharacterTarget = highestAtkAlly;
                     Debug.Log($"El Clérigo bendice a {highestAtkAlly.clase}, aumentando su ataque en {buffAmount}.");
                 }
 
@@ -72,6 +75,7 @@ namespace Assets.Scripst.Clases.PJs
                 {
                     int damage = Atack() / 2;
                     target.TakeDamage(damage);
+                    GameManager.CharacterTarget = target;
                     Debug.Log($"El Clérigo ataca al enemigo con un golpe débil por {damage} de daño.");
                 }
             }

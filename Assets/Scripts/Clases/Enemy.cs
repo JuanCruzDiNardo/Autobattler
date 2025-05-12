@@ -38,6 +38,7 @@ namespace Assets.Scripst.Clases
 
             // Elegir un objetivo aleatoriamente, ponderado por agro
             Character target = ChooseTargetByAgro(validTargets);
+            GameManager.CharacterTarget = target;
 
             if (target != null)
             {

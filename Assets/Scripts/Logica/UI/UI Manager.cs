@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     public Canvas UI;
     public Canvas Background;
 
+    public TextMeshProUGUI Turn;
+
     public List<TextMeshProUGUI> TurnList = new List<TextMeshProUGUI>();
 
     private Dictionary<string, TextMeshProUGUI> allyTexts = new Dictionary<string, TextMeshProUGUI>();
@@ -39,7 +41,8 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < GameManager.turnQueue.Count; i++)
         {
-            TurnList.ElementAt(i).text = GameManager.turnQueue.ElementAt(i).clase.ToString();
+            Character c = GameManager.turnQueue.ElementAt(i);
+            TurnList.ElementAt(i).text = $"{c.clase} {c.NextActionTime}";
         }
     }
 
@@ -51,8 +54,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateUI(Character current)
-    {               
+    public void UpdateUI()
+    {
+        Turn.text = $" Turno Nro. {GameManager.Turn} \n Tiempo: {GameManager.CurrentTime} ";
+
+        LoadTurnUI();
+
+        LoadCharacterOnTurn(GameManager.CharacterInTurn);
+        LoadTarget(GameManager.CharacterTarget);
+    }
+
+    void LoadCharacterOnTurn(Character current)
+    {
         //Character in turn
         allyTexts["clase"].text = current.clase.ToString();
         allyTexts["hp"].text = $"HP: {current.Healt}/{current.MaxHealt}";
@@ -61,4 +74,13 @@ public class UIManager : MonoBehaviour
         allyTexts["speed"].text = $"SPD: {current.Speed}";
     }
 
+    void LoadTarget(Character current)
+    {
+        //Character in turn
+        enemyTexts["clase"].text = current.clase.ToString();
+        enemyTexts["hp"].text = $"HP: {current.Healt}/{current.MaxHealt}";
+        enemyTexts["ataque"].text = $"ATK: {current.Atk}";
+        enemyTexts["defensa"].text = $"DEF: {current.Def}";
+        enemyTexts["speed"].text = $"SPD: {current.Speed}";
+    }
 }
